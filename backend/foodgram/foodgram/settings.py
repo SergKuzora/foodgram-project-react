@@ -1,7 +1,6 @@
-from email.policy import default
 import os
-from dotenv import load_dotenv
 
+from dotenv import load_dotenv
 
 load_dotenv()
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -76,7 +75,7 @@ else:
             'HOST': os.environ.get('DB_HOST'),
             'PORT': os.environ.get('DB_PORT'),
         }
-    } 
+    }
 
 
 AUTH_PASSWORD_VALIDATORS = [

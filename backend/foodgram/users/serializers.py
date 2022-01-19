@@ -2,6 +2,7 @@ from djoser.serializers import UserSerializer
 from rest_framework import serializers
 
 from food.models import Subscribe
+
 from .models import User
 
 

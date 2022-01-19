@@ -1,7 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from food.models import IngredientRecipe
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status, viewsets
 from rest_framework.decorators import api_view, permission_classes
@@ -10,20 +9,16 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from food.models import (Favorite, Ingredient, IngredientRecipe, PurchaseList,
+                         Recipe, Subscribe, Tag)
+
 from .filters import RecipeFilter, SearchFilter
 from .paginators import PageNumberPaginatorModified
 from .permissions import AuthorOrReadOnly
-from food.models import (
-    Favorite, Ingredient, PurchaseList,
-    Recipe, Subscribe, Tag
-)
-from .serializers import (
-    CreateRecipeSerializer, FavoriteSerializer,
-    IngredientSerializer, PurchaseListSerializer,
-    RecipeListSerializer, SubscribersSerializer,
-    SubscribeSerializer, TagSerializer
-)
-
+from .serializers import (CreateRecipeSerializer, FavoriteSerializer,
+                          IngredientSerializer, PurchaseListSerializer,
+                          RecipeListSerializer, SubscribersSerializer,
+                          SubscribeSerializer, TagSerializer)
 
 User = get_user_model()
 
@@ -98,7 +93,7 @@ class SubscribeView(APIView):
             author_id=user_id
         )
         follow.delete()
-        return Response(f'Вы отписались от данного пользователя',
+        return Response('Вы отписались от данного пользователя',
                         status.HTTP_204_NO_CONTENT)
 
 
