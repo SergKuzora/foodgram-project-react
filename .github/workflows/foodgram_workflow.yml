@@ -63,8 +63,8 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           stack_file_name: docker-compose.yaml
           script: |
-            sudo docker pull sergeykuzora/foodgram_backend:latest
-            sudo docker pull sergeykuzora/foodgram_frontend:lastest
+            sudo docker pull sergeykuzora/foodgram-backend:latest
+            sudo docker pull sergeykuzora/foodgram-frontend:lastest
             sudo docker-compose stop
             sudo docker-compose rm backend
             touch .env
