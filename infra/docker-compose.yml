@@ -10,12 +10,12 @@ services:
       - ./.env
 
   frontend:
-    image: sergeykuzora/foodgram-frontend:latest
+    image: sergeykuzora/foodgram-frontend:lastest
     volumes:
       - ../frontend/:/app/result_build/
 
   backend:
-    image: sergeykuzora/foodgram-backend:latest
+    image: sergeykuzora/foodgram-backend:lastest
     restart: always
     depends_on:
       - db
