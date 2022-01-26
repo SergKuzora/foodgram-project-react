@@ -139,7 +139,7 @@ DJOSER = {
 
 AUTH_USER_MODEL = 'users.User'
 
-LANGUAGE_CODE = 'ru'
+LANGUAGE_CODE = 'ru-RU'
 
 TIME_ZONE = 'UTC'
 
