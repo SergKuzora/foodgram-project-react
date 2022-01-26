@@ -1,30 +1,36 @@
 import os
+from pathlib import Path
 
 from dotenv import load_dotenv
 
 load_dotenv()
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
+BASE_DIR = Path(__file__).resolve().parent.parent
 
-DEBUG = True
+DEBUG = False
+
+if DEBUG:
+    SECRET_KEY = "debug"
+else:
+    SECRET_KEY = os.environ.get('SECRET_KEY')
 
 ALLOWED_HOSTS = ['*']
 
+
 INSTALLED_APPS = [
-    'api',
-    'food',
-    'users',
-    'rest_framework',
-    'import_export',
-    'rest_framework.authtoken',
-    'djoser',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'import_export',
+    'rest_framework.authtoken',
+    'djoser',
+    'users',
+    'api',
+    'food'
 ]
 
 MIDDLEWARE = [
@@ -55,9 +61,6 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'foodgram.wsgi.application'
-
-
 if DEBUG:
     DATABASES = {
         'default': {
@@ -77,6 +80,7 @@ else:
         }
     }
 
+WSGI_APPLICATION = 'foodgram.wsgi.application'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -145,7 +149,10 @@ USE_L10N = True
 
 USE_TZ = True
 
+STATIC_URL = '/backend_static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'backend_static')
 
-STATIC_URL = '/static/'
+MEDIA_URL = '/backend_media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'backend_media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
