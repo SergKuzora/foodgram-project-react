@@ -10,15 +10,17 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from .filters import RecipeFilter, SearchFilter
 from food.models import (Favorite, Ingredient, IngredientRecipe, PurchaseList,
                          Recipe, Subscribe, Tag)
-from .filters import RecipeFilter, SearchFilter
+from .mixins import CreateDestroyMixinView, RetrieveListMixinView
 from .paginators import PageNumberPaginatorModified
 from .permissions import AuthorOrReadOnly
-from .serializers import (CreateRecipeSerializer, FavoriteSerializer,
-                          IngredientSerializer, PurchaseListSerializer,
-                          RecipeListSerializer, SubscribersSerializer,
-                          SubscribeSerializer, TagSerializer)
+from .serializers import (CreateDeleteSerializer, CreateRecipeSerializer,
+                          FavoriteSerializer, IngredientSerializer,
+                          PurchaseListSerializer, RecipeListSerializer,
+                          SubscribersSerializer, SubscribeSerializer,
+                          TagSerializer)
 
 User = get_user_model()
 
@@ -97,65 +99,28 @@ class SubscribeView(APIView):
                         status.HTTP_204_NO_CONTENT)
 
 
-class FavoriteViewSet(APIView):
-    permission_classes = [IsAuthenticated]
+class CreateDeleteView(CreateDestroyMixinView):
 
-    def get(self, request, recipe_id):
-        user = request.user.id
-        data = {
-            'user': user,
-            'recipe': recipe_id
-        }
-        serializer = FavoriteSerializer(
-            data=data, context={'request': request}
-        )
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status.HTTP_201_CREATED)
+    def get_model(self):
+        if self.basename == 'favorite':
+            return Favorite
+        return PurchaseList
 
-    def delete(self, request, recipe_id):
-        user = request.user
-        favorite_recipe = get_object_or_404(
-            Favorite,
-            user=user,
-            recipe__id=recipe_id
-        )
-        favorite_recipe.delete()
-        return Response(
-            'Рецепт удален из избранного',
-            status.HTTP_204_NO_CONTENT
-        )
+    def get_serializer_class(self):
+        CreateDeleteSerializer.Meta.model = self.get_model()
+        return CreateDeleteSerializer
 
-
-class PurchaseListView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, recipe_id):
-        user = request.user.id
-        data = {
-            'user': user,
-            'recipe': recipe_id
-        }
-        serializer = PurchaseListSerializer(
-            data=data,
-            context={'request': request}
+    def get_object(self):
+        user = self.request.user
+        recipe = get_object_or_404(Recipe, pk=self.kwargs['recipe_id'])
+        obj = get_object_or_404(
+            self.get_model(), user=user, recipe=recipe,
         )
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status.HTTP_201_CREATED)
+        self.check_object_permissions(self.request, obj)
+        return obj
 
-    def delete(self, request, recipe_id):
-        user = request.user
-        purchace_list_recipe = get_object_or_404(
-            PurchaseList,
-            user=user,
-            recipe__id=recipe_id
-        )
-        purchace_list_recipe.delete()
-        return Response(
-            'Рецепт удален из списка покупок',
-            status.HTTP_204_NO_CONTENT
-        )
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
 
 
 class DownloadPurchaseList(APIView):

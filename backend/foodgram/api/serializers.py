@@ -159,52 +159,47 @@ class RecipeShortSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'image', 'cooking_time']
 
 
-class FavoriteSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Favorite
-        fields = '__all__'
-
-    def validate(self, attrs):
-        request = self.context['request']
-        if (request.method == 'GET'
-                and Favorite.objects.filter(
-                    user=request.user,
-                    recipe=attrs['recipe']
-                ).exists()):
-            raise serializers.ValidationError(
-                'Рецепт уже добавлен в избранное'
-            )
-        return attrs
-
-    def to_representation(self, instance):
-        return RecipeShortSerializer(
-            instance.recipe,
-            context={'request': self.context.get('request')}
-        ).data
-
-
-class PurchaseListSerializer(serializers.ModelSerializer):
+class CreateDeleteSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField()
+    recipe = serializers.SerializerMethodField()
 
     class Meta:
-        model = PurchaseList
+        model = None
         fields = '__all__'
 
-    def validate(self, attrs):
-        request = self.context['request']
-        if (request.method == 'GET'
-                and PurchaseList.objects.filter(
-                    user=request.user,
-                    recipe=attrs['recipe'])):
-            raise serializers.ValidationError(
-                'Вы уже добавили рецепт в список покупок'
-            )
-        return attrs
-
     def to_representation(self, instance):
-        return RecipeShortSerializer(
-            instance.recipe,
-            context={'request': self.context.get('request')}
-        ).data
+        request = self.context.get('request')
+        context = {'request': request}
+        instance = get_object_or_404(
+            Recipe, pk=int(self._context['view'].kwargs['recipe_id'])
+        )
+        return RecipeSerializer(instance, context=context).data
+
+    def get_user(self, obj):
+        return self.context['request'].user
+
+    def get_recipe(self, obj):
+        return get_object_or_404(
+            Recipe, pk=self._context['view'].kwargs['recipe_id']
+        )
+
+    def validate(self, attrs):
+        obj = self.Meta.model.objects.filter(
+            user=self.context['request'].user,
+            recipe=self.context['view'].kwargs['recipe_id']
+        ).first()
+        if obj is not None:
+            raise serializers.ValidationError(
+                'Such record is already exists'
+            )
+        return super().validate(attrs)
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        obj = get_object_or_404(
+            Recipe, pk=self.context['view'].kwargs['recipe_id'],
+        )
+        return self.Meta.model.objects.create(user=user, recipe=obj)
 
 
 class SubscribersSerializer(serializers.ModelSerializer):
