@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
@@ -11,7 +12,6 @@ from rest_framework.views import APIView
 
 from food.models import (Favorite, Ingredient, IngredientRecipe, PurchaseList,
                          Recipe, Subscribe, Tag)
-
 from .filters import RecipeFilter, SearchFilter
 from .paginators import PageNumberPaginatorModified
 from .permissions import AuthorOrReadOnly
@@ -97,7 +97,7 @@ class SubscribeView(APIView):
                         status.HTTP_204_NO_CONTENT)
 
 
-class FavoriteViewSet(APIView):
+class FavoritePurchaseView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, recipe_id):
@@ -127,35 +127,12 @@ class FavoriteViewSet(APIView):
         )
 
 
-class PurchaseListView(APIView):
-    permission_classes = [IsAuthenticated]
+class FavoriteViewSet(FavoritePurchaseView):
+    pass
 
-    def get(self, request, recipe_id):
-        user = request.user.id
-        data = {
-            'user': user,
-            'recipe': recipe_id
-        }
-        serializer = PurchaseListSerializer(
-            data=data,
-            context={'request': request}
-        )
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status.HTTP_201_CREATED)
 
-    def delete(self, request, recipe_id):
-        user = request.user
-        purchace_list_recipe = get_object_or_404(
-            PurchaseList,
-            user=user,
-            recipe__id=recipe_id
-        )
-        purchace_list_recipe.delete()
-        return Response(
-            'Рецепт удален из списка покупок',
-            status.HTTP_204_NO_CONTENT
-        )
+class PurchaseListView(FavoritePurchaseView):
+    pass
 
 
 class DownloadPurchaseList(APIView):
@@ -164,22 +141,18 @@ class DownloadPurchaseList(APIView):
     def get(self, request):
         recipes = request.user.purchases.all().values_list('recipe', flat=True)
         ingredients = IngredientRecipe.objects.filter(
-            recipe__in=recipes).all().values_list('ingredient', flat=True)
+            recipe__in=recipes).all().values_list(
+                'ingredient', flat=True).annotate(total_amount=Sum('amount'))
         purchase_list = {}
 
         for ingredient in ingredients:
             name = ingredient.ingredient.name
-            amount = ingredient.amount
+            amount = ingredient.total_amount
             unit = ingredient.ingredient.measurement_unit
-            if name not in purchase_list:
-                purchase_list[name] = {
-                    'amount': amount,
-                    'unit': unit
-                }
-            else:
-                purchase_list[name]['amount'] = (
-                    purchase_list[name]['amount'] + amount
-                )
+            purchase_list[name] = {
+                'amount': amount,
+                'unit': unit
+            }
         wishlist = []
         for item in purchase_list:
             wishlist.append(f'{item} ({purchase_list[item]["unit"]}): '

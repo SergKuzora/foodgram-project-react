@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = '!dml&!b5ap2xmqe70psvcj*%e7aspvp)=!+a(y9aaj)0$&ej1n'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 DEBUG = True
 
