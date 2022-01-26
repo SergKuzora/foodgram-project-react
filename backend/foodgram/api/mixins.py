@@ -1,6 +1,6 @@
 from rest_framework import mixins, permissions, viewsets
 
-from foodgram.api.paginators import PageNumberPaginatorModified
+from api.paginators import PageNumberPaginatorModified
 
 
 class CreateDestroyMixinView(
