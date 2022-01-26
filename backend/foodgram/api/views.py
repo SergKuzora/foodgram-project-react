@@ -98,7 +98,7 @@ class SubscribeView(APIView):
 
 
 class FavoriteViewSet(APIView):
-    permission_classes = [IsAuthenticated] 
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, recipe_id):
         user = request.user.id
@@ -128,7 +128,7 @@ class FavoriteViewSet(APIView):
 
 
 class PurchaseListView(APIView):
-    permission_classes = [IsAuthenticated] 
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, recipe_id):
         user = request.user.id
@@ -143,7 +143,6 @@ class PurchaseListView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status.HTTP_201_CREATED)
-
 
     def delete(self, request, recipe_id):
         user = request.user
