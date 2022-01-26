@@ -128,11 +128,91 @@ class FavoritePurchaseView(APIView):
 
 
 class FavoriteViewSet(FavoritePurchaseView):
-    pass
+    permission_classes = [IsAuthenticated] 
+
+ 
+
+    def get(self, request, recipe_id): 
+
+        user = request.user.id 
+
+        data = { 
+
+            'user': user, 
+
+            'recipe': recipe_id 
+
+        } 
+
+        serializer = FavoriteSerializer( 
+
+            data=data, context={'request': request} 
+
+        ) 
+
+        serializer.is_valid(raise_exception=True) 
+
+        serializer.save() 
+
+        return Response(serializer.data, status.HTTP_201_CREATED) 
+
+ 
+
+    def delete(self, request, recipe_id): 
+
+        user = request.user 
+
+        favorite_recipe = get_object_or_404( 
+
+            Favorite, 
+
+            user=user, 
+
+            recipe__id=recipe_id 
+
+        ) 
+
+        favorite_recipe.delete() 
+
+        return Response( 
+
+            'Рецепт удален из избранного', 
+
+            status.HTTP_204_NO_CONTENT 
+
+        ) 
 
 
 class PurchaseListView(FavoritePurchaseView):
-    pass
+    permission_classes = [IsAuthenticated] 
+
+    def get(self, request, recipe_id):
+        user = request.user.id
+        data = {
+            'user': user,
+            'recipe': recipe_id
+        }
+        serializer = PurchaseListSerializer(
+            data=data,
+            context={'request': request}
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status.HTTP_201_CREATED)
+
+
+    def delete(self, request, recipe_id):
+        user = request.user
+        purchace_list_recipe = get_object_or_404(
+            PurchaseList,
+            user=user,
+            recipe__id=recipe_id
+        )
+        purchace_list_recipe.delete()
+        return Response(
+            'Рецепт удален из списка покупок',
+            status.HTTP_204_NO_CONTENT
+        )
 
 
 class DownloadPurchaseList(APIView):
