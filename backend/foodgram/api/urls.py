@@ -1,21 +1,24 @@
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
-from .views import (DownloadPurchaseList, FavoriteViewSet, IngredientViewSet,
-                    PurchaseListView, RecipeViewSet, SubscribeView, TagViewSet,
-                    show_subscribs)
+from .views import (DownloadPurchaseList, IngredientViewSet,
+                    RecipeViewSet, SubscribeView, TagViewSet,
+                    show_subscribs, CreateDeleteView)
 
 router = DefaultRouter()
 
 router.register('tags', TagViewSet, basename='tags')
 router.register('ingredients', IngredientViewSet, basename='ingredients')
 router.register('recipes', RecipeViewSet, basename='recipes')
-
+router.register(
+    r'recipes/(?P<recipe_id>\d+)/favorite',
+    CreateDeleteView, basename='favorite',
+)
+router.register(
+    r'recipes/(?P<recipe_id>\d+)/shopping_cart',
+    CreateDeleteView, basename='shopping_cart',
+)
 urlpatterns = [
-    path('recipes/<int:recipe_id>/favorite/',
-         FavoriteViewSet.as_view(), name='add_recipe_to_favorite'),
-    path('recipes/<int:recipe_id>/shopping_cart/',
-         PurchaseListView.as_view(), name='add_recipe_to_shopping_cart'),
     path('recipes/download_shopping_cart/',
          DownloadPurchaseList.as_view(), name='dowload_shopping_cart'),
     path('users/subscriptions/',
