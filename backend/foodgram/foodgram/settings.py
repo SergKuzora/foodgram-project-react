@@ -1,4 +1,5 @@
 import os
+from ..api.paginators import PageNumberPaginatorModified
 
 from dotenv import load_dotenv
 
@@ -155,3 +156,5 @@ MEDIA_URL = '/backend_media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'backend_media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+DEFAULT_PAGINATION_CLASS = PageNumberPaginatorModified
