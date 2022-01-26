@@ -173,7 +173,7 @@ class CreateDeleteSerializer(serializers.ModelSerializer):
         instance = get_object_or_404(
             Recipe, pk=int(self._context['view'].kwargs['recipe_id'])
         )
-        return RecipeSerializer(instance, context=context).data
+        return RecipeShortSerializer(instance, context=context).data
 
     def get_user(self, obj):
         return self.context['request'].user

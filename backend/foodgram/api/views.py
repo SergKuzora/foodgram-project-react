@@ -13,12 +13,11 @@ from rest_framework.views import APIView
 from .filters import RecipeFilter, SearchFilter
 from food.models import (Favorite, Ingredient, IngredientRecipe, PurchaseList,
                          Recipe, Subscribe, Tag)
-from .mixins import CreateDestroyMixinView, RetrieveListMixinView
+from .mixins import CreateDestroyMixinView
 from .paginators import PageNumberPaginatorModified
 from .permissions import AuthorOrReadOnly
 from .serializers import (CreateDeleteSerializer, CreateRecipeSerializer,
-                          FavoriteSerializer, IngredientSerializer,
-                          PurchaseListSerializer, RecipeListSerializer,
+                          IngredientSerializer, RecipeListSerializer,
                           SubscribersSerializer, SubscribeSerializer,
                           TagSerializer)
 
