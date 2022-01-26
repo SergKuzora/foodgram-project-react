@@ -97,8 +97,8 @@ class SubscribeView(APIView):
                         status.HTTP_204_NO_CONTENT)
 
 
-class FavoritePurchaseView(APIView):
-    permission_classes = [IsAuthenticated]
+class FavoriteViewSet(APIView):
+    permission_classes = [IsAuthenticated] 
 
     def get(self, request, recipe_id):
         user = request.user.id
@@ -127,63 +127,7 @@ class FavoritePurchaseView(APIView):
         )
 
 
-class FavoriteViewSet(FavoritePurchaseView):
-    permission_classes = [IsAuthenticated] 
-
- 
-
-    def get(self, request, recipe_id): 
-
-        user = request.user.id 
-
-        data = { 
-
-            'user': user, 
-
-            'recipe': recipe_id 
-
-        } 
-
-        serializer = FavoriteSerializer( 
-
-            data=data, context={'request': request} 
-
-        ) 
-
-        serializer.is_valid(raise_exception=True) 
-
-        serializer.save() 
-
-        return Response(serializer.data, status.HTTP_201_CREATED) 
-
- 
-
-    def delete(self, request, recipe_id): 
-
-        user = request.user 
-
-        favorite_recipe = get_object_or_404( 
-
-            Favorite, 
-
-            user=user, 
-
-            recipe__id=recipe_id 
-
-        ) 
-
-        favorite_recipe.delete() 
-
-        return Response( 
-
-            'Рецепт удален из избранного', 
-
-            status.HTTP_204_NO_CONTENT 
-
-        ) 
-
-
-class PurchaseListView(FavoritePurchaseView):
+class PurchaseListView(APIView):
     permission_classes = [IsAuthenticated] 
 
     def get(self, request, recipe_id):
