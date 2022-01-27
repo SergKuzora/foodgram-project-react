@@ -78,8 +78,7 @@ jobs:
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
             echo DB_PORT=${{ secrets.COMPOSE_PROJECT_NAME }} >> .env
             sudo docker-compose up -d --build
-            sudo docker-compose exec -T backend python manage.py makemigrations recipes
-            sudo docker-compose exec -T backend python manage.py makemigrations users
+            sudo docker-compose exec -T backend python manage.py makemigrations
             sudo docker-compose exec -T backend python manage.py migrate --noinput
             sudo docker-compose exec -T backend python manage.py collectstatic --no-input
             sudo docker-compose exec backend python manage.py loaddata ingredients.json
