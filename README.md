@@ -56,7 +56,7 @@ docker-compose exec backend python manage.py createsuperuser
 4. Соберите статику:
 ```bash
 docker-compose exec backend python manage.py collectstatic
-
+ 
 ## Сайт
 Сайт доступен по ссылке:
 http://51.250.30.109
