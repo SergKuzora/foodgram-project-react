@@ -63,7 +63,7 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           stack_file_name: docker-compose.yaml
           script: |
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram-web:lastest
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram-web:lastest --remove-orphans
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram-frontend:lastest
             cd foodgram/
             sudo docker-compose stop
