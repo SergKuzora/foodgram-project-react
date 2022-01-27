@@ -1,5 +1,4 @@
 from rest_framework import mixins, permissions, viewsets
-from sympy import Li
 
 from api.paginators import LimitPageNumberPagination
 
