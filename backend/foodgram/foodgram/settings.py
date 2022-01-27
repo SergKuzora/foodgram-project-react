@@ -159,9 +159,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'backend_media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-
-
 class PageNumberPaginatorModified(PageNumberPagination):
     page_size_query_param = 'limit'
+
 
 DEFAULT_PAGINATION_CLASS = PageNumberPaginatorModified
