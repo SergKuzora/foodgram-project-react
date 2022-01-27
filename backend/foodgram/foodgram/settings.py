@@ -1,3 +1,4 @@
+from email.policy import default
 import os
 
 from dotenv import load_dotenv
@@ -6,12 +7,12 @@ load_dotenv()
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-DEBUG = True
+DEBUG = False
 
 if DEBUG:
     SECRET_KEY = "debug"
 else:
-    SECRET_KEY = os.environ.get('SECRET_KEY')
+    SECRET_KEY = os.environ.get('SECRET_KEY', default='!dml&!b5ap2xmqe70psvcj*%e7aspvp)=!+a(y9aaj)0$&ej1n')
 
 ALLOWED_HOSTS = ['*']
 
@@ -155,7 +156,3 @@ MEDIA_URL = '/backend_media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'backend_media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-class PageNumberPaginatorModified(PageNumberPagination):
-    page_size_query_param = 'limit'
