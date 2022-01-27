@@ -1,5 +1,9 @@
 import os
-from backend.foodgram.api.paginators import PageNumberPaginatorModified
+import sys
+  
+sys.path.append('../foodgram')
+  
+from foodgram.api.paginators import PageNumberPaginatorModified
 
 from dotenv import load_dotenv
 
