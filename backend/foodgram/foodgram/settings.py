@@ -1,5 +1,5 @@
 import os
-from ..api.paginators import PageNumberPaginatorModified
+from foodgram.api.paginators import PageNumberPaginatorModified
 
 from dotenv import load_dotenv
 
