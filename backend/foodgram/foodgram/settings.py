@@ -1,9 +1,6 @@
 import os
-import sys
 
-sys.path.append('../foodgram')
-
-from foodgram.api.paginators import PageNumberPaginatorModified
+from rest_framework.pagination import PageNumberPagination
 
 from dotenv import load_dotenv
 
@@ -160,5 +157,11 @@ MEDIA_URL = '/backend_media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'backend_media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+
+class PageNumberPaginatorModified(PageNumberPagination):
+    page_size_query_param = 'limit'
 
 DEFAULT_PAGINATION_CLASS = PageNumberPaginatorModified
