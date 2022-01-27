@@ -27,6 +27,7 @@ DB_PORT=5432
 sudo apt install docker docker-compose
 ```
 
+
 Про установку на других операционных системах вы можете прочитать в [документации](https://docs.docker.com/engine/install/) и [про установку docker-compose](https://docs.docker.com/compose/install/).
 
 ### Установка проекта на сервер
