@@ -4,7 +4,7 @@ Cервис для публикаций и обмена рецептами.
 Авторизованные пользователи могут подписываться на понравившихся авторов, добавлять рецепты в избранное, в покупки, скачивать список покупок. Неавторизованным пользователям доступна регистрация, авторизация, просмотр рецептов других пользователей.
 
 [![foodgram_workflow](https://github.com/SergKuzora/foodgram-project-react/actions/workflows/foodgram_workflow.yml/badge.svg)](https://github.com/SergKuzora/foodgram-project-react/actions/workflows/foodgram_workflow.yml)
-
+ 
 ## Установка
 Для запуска локально, создайте файл `.env` в директории `/backend/` с содержанием:
 ```
