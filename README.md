@@ -49,15 +49,11 @@ docker-compose up -d
 ```bash
 docker-compose exec backend python manage.py migrate
 ```
-3. Заполните базу начальными данными (необязательно):
-```bash
-docker-compose exec backend python manange.py loaddata data/fixtures.json
-```
-4. Создайте администратора:
+3. Создайте администратора:
 ```bash
 docker-compose exec backend python manage.py createsuperuser
 ```
-5. Соберите статику:
+4. Соберите статику:
 ```bash
 docker-compose exec backend python manage.py collectstatic
 
