@@ -14,7 +14,7 @@ from .filters import RecipeFilter, SearchFilter
 from food.models import (Favorite, Ingredient, IngredientRecipe, PurchaseList,
                          Recipe, Subscribe, Tag)
 from .mixins import CreateDestroyMixinView
-from .paginators import PageNumberPaginatorModified
+from .paginators import LimitPageNumberPagination
 from .permissions import AuthorOrReadOnly
 from .serializers import (CreateDeleteSerializer, CreateRecipeSerializer,
                           IngredientSerializer, RecipeListSerializer,
@@ -36,7 +36,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     permission_classes = [AuthorOrReadOnly]
     filter_backends = [DjangoFilterBackend]
     filter_class = RecipeFilter
-    pagination_class = PageNumberPaginatorModified
+    pagination_class = LimitPageNumberPagination
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
