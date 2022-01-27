@@ -1,7 +1,5 @@
 import os
 
-from rest_framework.pagination import PageNumberPagination
-
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -161,6 +159,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 class PageNumberPaginatorModified(PageNumberPagination):
     page_size_query_param = 'limit'
-
-
-DEFAULT_PAGINATION_CLASS = PageNumberPaginatorModified
