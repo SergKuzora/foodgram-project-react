@@ -10,4 +10,4 @@ COPY backend/ /app
 
 WORKDIR /app
 
-CMD ["gunicorn", "foodgram.wsgi:application", "--bind", "0:8000" ]
+CMD ["gunicorn", "backend.wsgi:application", "--bind", "0:8000" ]
