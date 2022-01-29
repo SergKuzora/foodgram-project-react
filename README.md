@@ -52,6 +52,9 @@ docker-compose exec backend python manage.py collectstatic
 Сайт доступен по ссылке:
 http://51.250.30.109
 
+## Данные Админки
+sergkuzora@yandex.ru
+RPG-5iC-hcL-UsZ
 
 ## Документация к API
 Чтобы открыть документацию локально, запустите сервер и перейдите по ссылке:
