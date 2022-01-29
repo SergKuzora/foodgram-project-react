@@ -4,7 +4,9 @@ Cервис для публикаций и обмена рецептами.
 Авторизованные пользователи могут подписываться на понравившихся авторов, добавлять рецепты в избранное, в покупки, скачивать список покупок. Неавторизованным пользователям доступна регистрация, авторизация, просмотр рецептов других пользователей.
 
 [![foodgram_workflow](https://github.com/SergKuzora/foodgram-project-react/actions/workflows/foodgram_workflow.yml/badge.svg)](https://github.com/SergKuzora/foodgram-project-react/actions/workflows/foodgram_workflow.yml)
- 
+
+После первого ревью проект был переписан из-за большого количества ошибок
+
 ## Установка
 Для запуска локально, создайте файл `.env` в директории `/backend/` с содержанием:
 ```
@@ -28,17 +30,6 @@ sudo apt install docker docker-compose
 ```
 
 Про установку на других операционных системах вы можете прочитать в [документации](https://docs.docker.com/engine/install/) и [про установку docker-compose](https://docs.docker.com/compose/install/).
-
-### Установка проекта на сервер
-1. Скопируйте файлы из папки `/server/` на ваш сервер и `.env` файл из директории `/backend/`:
-```bash
-scp -r data/ <username>@<server_ip>:/home/<username>/
-scp backend/.env <username>@<server_ip>:/home/<username>/
-```
-2. Зайдите на сервер и настройте `server_name` в конфиге nginx на ваше доменное имя:
-```bash
-vim nginx.conf
-```
 
 ### Настройка проекта
 1. Запустите docker compose:
