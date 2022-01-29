@@ -31,12 +31,12 @@ class CustomUserViewSet(views.UserViewSet):
         return self.get_paginated_response(serializer.data)
 
     @action(
-        methods=['get', 'delete'],
+        methods=['POST', 'delete'],
         detail=True,
         permission_classes=[permissions.IsAuthenticated],
     )
     def subscribe(self, request, id):
-        if request.method == 'GET':
+        if request.method == 'POST':
             return self.add_subscribe(Follow, request, id)
         elif request.method == 'DELETE':
             return self.del_subscribe(Follow, request, id)
