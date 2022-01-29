@@ -85,19 +85,19 @@ def del_recipe(model, user, pk):
             )
 
 
-@api_view(['GET', 'DELETE'])
+@api_view(['POST', 'DELETE'])
 @permission_classes([permissions.IsAuthenticated])
 def favorite(request, pk):
-    if request.method == 'GET':
+    if request.method == 'POST':
         return add_recipe(Favorite, request.user, pk)
     elif request.method == 'DELETE':
         return del_recipe(Favorite, request.user, pk)
 
 
-@api_view(['GET', 'DELETE'])
+@api_view(['POST', 'DELETE'])
 @permission_classes([permissions.IsAuthenticated])
 def shopping_cart(request, pk):
-    if request.method == 'GET':
+    if request.method == 'POST':
         return add_recipe(ShoppingCart, request.user, pk)
     elif request.method == 'DELETE':
         return del_recipe(ShoppingCart, request.user, pk)
